@@ -1,0 +1,116 @@
+<!--
+	寻路模式
+	1. 深度优先算法
+	2. 广度优先算法
+	3. 启发式搜索
+		- A*算法
+-->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>A*算法</title>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		li {
+			list-style: none;
+		}
+		#ul1 {
+			height: auto;
+			overflow: hidden;
+			margin: 20px auto;
+			border: 1px #000 solid;
+			border-bottom: none;
+			border-right: none;
+		}
+		#ul1 li {
+			float: left;
+			border: solid 1px #000;
+			border-top: none;
+			border-left: none;
+		}
+		#ul1 li.styl1 {
+			background: red;
+		}
+		#ul1 li.styl2 {
+			background: green;
+		}
+		#ul1 li.styl3 {
+			background: blue;
+		}
+		input {
+			width: 100px;
+			display: block;
+			margin: 0 auto;
+		}
+	</style>
+</head>
+<body>
+	<ul id="ul1">
+		
+	</ul>
+	<input type="button" value="开始寻路" id="input1" name="">
+
+	<script type="text/javascript">
+		var oUl1 = document.getElementById('ul1');
+		var aLi = oUl1.getElementsByTagName('li');
+		var oInput = document.getElementById('input1');
+
+		var map = [
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,2,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		];
+
+		var cols = Math.sqrt(map.length);
+		var sizeGird = 20;
+
+		init();
+		function init() {
+			createMap();
+		}
+
+		function createMap() {
+
+			// 尽量少直接操作DOM 这里只操作一次
+			oUl1.style.width = cols * (sizeGird + 1) + 1 + 'px';
+			var tempLiArr = '';
+			for (var i = 0; i < map.length; i++) {
+				var tempStr = '';
+				// 最优方案 0的可能性最大 放在第一个判断
+				if (map[i] == 0) {
+					tempStr = `<li style='width:${sizeGird}px;height:${sizeGird}px'></li>`;
+				} else if (map[i] == 3) {
+					tempStr = `<li class='styl3' style='width:${sizeGird}px;height:${sizeGird}px'></li>`;
+				} else if (map[i] == 1) {
+					tempStr = `<li class='styl1' style='width:${sizeGird}px;height:${sizeGird}px'></li>`;
+				} else {
+					tempStr = `<li class='styl2' style='width:${sizeGird}px;height:${sizeGird}px'></li>`;
+				}
+
+				tempLiArr += tempStr;
+			}
+			oUl1.innerHTML = tempLiArr;
+		}
+	</script>
+</body>
+</html>
